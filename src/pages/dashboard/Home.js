@@ -1,13 +1,16 @@
 import React from 'react';
 
+import SectorDonutChart from './SectorDonutChart';
+import SectorBarChart from './SectorBarChart';
+
 function Home() {
   return (
-    <div className="flex flex-col items-center justify-center w-full h-screen bg-gray-100">
-      <div className="p-6 border-4 border-dashed border-gray-300 rounded-lg text-center">
-        <h1 className="text-3xl font-semibold text-gray-700">Dashboard Placeholder</h1>
-        <p className="text-gray-500 mt-2">
-          This is a placeholder for the dashboard.
-        </p>
+    <div className="p-8 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-semibold text-center mb-6">Dashboard</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <SectorDonutChart />
+        <SectorBarChart />
       </div>
     </div>
   );
