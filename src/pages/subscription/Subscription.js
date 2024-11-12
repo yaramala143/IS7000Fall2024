@@ -1,34 +1,137 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 
 function Subscription() {
-  // Dummy data for top 10 subscriptions
-  const subscriptions = [
-    { id: 1, name: 'Basic Plan', description: 'Access to standard features', price: '$5/month' },
-    { id: 2, name: 'Pro Plan', description: 'Includes premium features', price: '$15/month' },
-    { id: 3, name: 'Enterprise Plan', description: 'Best for large teams', price: '$30/month' },
-    { id: 4, name: 'Family Plan', description: 'Access for up to 5 users', price: '$12/month' },
-    { id: 5, name: 'Student Plan', description: 'Discounted rate for students', price: '$3/month' },
-    { id: 6, name: 'Corporate Plan', description: 'For corporate usage', price: '$40/month' },
-    { id: 7, name: 'Freelancer Plan', description: 'Ideal for individuals', price: '$8/month' },
-    { id: 8, name: 'Trial Plan', description: '30-day free trial', price: '$0/month' },
-    { id: 9, name: 'Annual Plan', description: 'Pay annually and save', price: '$50/year' },
-    { id: 10, name: 'VIP Plan', description: 'All access VIP pass', price: '$100/month' },
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
+
+  const subscriptionPlans = [
+    {
+      id: 'all-access',
+      name: 'All Access',
+      price: '$1.50/week',
+      billed: 'Billed as $6 every 4 weeks for the first year',
+      description: [
+        'News: Engage with expert reporting, including culture coverage and analysis.',
+        'Games: Unwind with Spelling Bee, Wordle, The Crossword and more.',
+        'Cooking: Enjoy delicious recipes, advice and inspiration daily.',
+        'Wirecutter: Choose products confidently with reviews and real-world testing.',
+        'The Athletic: Follow in-depth, personalized coverage of your favorite sports.',
+      ],
+    },
+    {
+      id: 'news',
+      name: 'News',
+      price: '$1/week',
+      billed: 'Billed as $4 every 4 weeks for the first year',
+      description: [
+        'News: Engage with expert reporting, including culture coverage and analysis.',
+        'Games: Unwind with Spelling Bee, Wordle, The Crossword and more.',
+        'Cooking: Enjoy delicious recipes, advice and inspiration daily.',
+        'Wirecutter: Choose products confidently with reviews and real-world testing.',
+        'The Athletic: Follow in-depth, personalized coverage of your favorite sports.',
+      ],
+    },
   ];
 
+  const handleSubscribeNow = (plan) => {
+    setSelectedPlan(plan);
+    setShowPaymentForm(true);
+  };
+
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+    console.log('Payment details submitted');
+  };
+
   return (
-    <div className="bg-gray-100 p-8">
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Top 10 Subscriptions</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {subscriptions.map((sub) => (
-          <div
-            key={sub.id}
-            className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200">
-            <h3 className="text-xl font-bold text-gray-700">{sub.name}</h3>
-            <p className="text-gray-500 mt-2">{sub.description}</p>
-            <p className="text-teal-700 font-semibold mt-4">{sub.price}</p>
-          </div>
-        ))}
-      </div>
+    <div className="flex justify-center items-start p-6 bg-gray-100 min-h-screen">
+      {!showPaymentForm ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+          {subscriptionPlans.map((plan) => (
+            <div key={plan.id} className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-lg font-semibold text-center">{plan.name}</h3>
+              <p className="text-center text-xl font-bold">{plan.price}</p>
+              <p className="text-center text-sm text-gray-500">{plan.billed}</p>
+              <ul className="mt-4 list-disc list-inside text-sm text-gray-600">
+                {plan.description.map((feature, index) => (
+                  <li key={index}>{feature}</li>
+                ))}
+              </ul>
+              <button
+                onClick={() => handleSubscribeNow(plan)}
+                className="w-full mt-6 bg-black text-white py-2 rounded-md font-semibold"
+              >
+                Subscribe Now
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="bg-white shadow-lg p-8 rounded-lg w-full max-w-2xl">
+          <h1 className="text-2xl font-bold mb-6">Complete Your Subscription</h1>
+          <h2 className="text-lg font-semibold mb-4">{selectedPlan.name}</h2>
+          <p className="text-gray-700 mb-2"><strong>Price:</strong> {selectedPlan.price}</p>
+          <p className="text-gray-700 mb-4"><strong>Billed:</strong> {selectedPlan.billed}</p>
+
+          <form onSubmit={handlePaymentSubmit} className="space-y-6">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Email</label>
+              <input
+                type="email"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Cardholder Name</label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">Card Number</label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="flex gap-4">
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Expiry Month</label>
+                <select className="w-full p-2 border border-gray-300 rounded-md" required>
+                  <option value="">Select Month</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">Expiry Year</label>
+                <select className="w-full p-2 border border-gray-300 rounded-md" required>
+                  <option value="">Select Year</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">CVC</label>
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <button type="submit" className="w-full bg-black text-white py-3 rounded-md font-semibold mt-6">
+              SUBSCRIBE NOW
+            </button>
+          </form>
+        </div>
+      )}
+
     </div>
   );
 }
